@@ -1,0 +1,27 @@
+{
+    "variables":{
+        "version": "0.1",
+        "experiment": "test"
+    },
+    "builders":[{
+        "type": "amazon-ebs",
+        "region":"eu-west-2",
+        "source_ami":"ami-f1d7c395",
+        "instance_type": "t2.micro",
+        "ami_name": "ubuntu-beevalabs-{{ user `experiment` }}-{{ user `version` }}",
+        "ssh_username": "ubuntu",
+        "tags":{
+            "OS_Version":"Ubuntu",
+            "Release":"16.04",
+            "experiment": "{{ user `experiment` }}"
+        }
+    }],
+    "provisioners":[{
+        "type":"shell",
+        "inline":"sudo apt install -y ansible"
+    },{
+        "type":"ansible",
+        "playbook_file":"./ansible/playbook.yml"
+    }]
+}
+

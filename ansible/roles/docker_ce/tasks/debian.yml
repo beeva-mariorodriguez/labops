@@ -1,0 +1,23 @@
+---
+- name: "[docker_ce] install prerequisites"
+  apt:
+    name: "{{ item }}"
+    state: "present"
+    update_cache: "yes"
+  with_items:
+  - curl
+  - ca-certificates
+  - apt-transport-https
+- name: "[docker_ce] add docker.com GPG key"
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    state: present
+- name: "[docker-ce] add docker repo"
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release|lower }} stable"
+- name: "[docker_ce] install docker CE"
+  apt:
+    name: "docker-ce"
+    state: "present"
+    update_cache: "yes"
+
